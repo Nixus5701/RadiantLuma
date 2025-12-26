@@ -17,6 +17,7 @@ The 3DS OS constantly enforces a brightness cap of 172 or below. It does so by c
 The 400 value is arbitrary, any value above 172 will have the same effect with the same exact luminance. I just chose 400 because the brightness seems more than double the maximum 172.
 ㅤㅤ
 
+ㅤㅤ
 ### Permanent Brightness Recalibration
 Implementation of [Nutez's Permanent Brightness Recalibration](https://github.com/DullPointer/Luma3DS/commit/0e67a667077f601680f74ddc10ef88a799a5a7ad#diff-33c1f680c1c6c4ed3d06898a6535d80f17bc93753dfbb3ab4d61e9d7f940ecaeR139-R142), allowing you to modify the vanilla brightness values for levels 1–5.
 
