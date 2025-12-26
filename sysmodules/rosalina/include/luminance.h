@@ -31,3 +31,5 @@
 u32 getMinLuminancePreset(void);
 u32 getMaxLuminancePreset(void);
 u32 getCurrentLuminance(bool top);
+void setLuminance(u32 luminance, bool top);
+void Luminance_RecalibrateBrightnessDefaults(void);

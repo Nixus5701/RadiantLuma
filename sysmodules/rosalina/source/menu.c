@@ -434,7 +434,7 @@ static void menuDraw(Menu *menu, u32 selected)
 {
     char versionString[16];
     s64 out;
-    u32 version, commitHash;
+    u32 version;
     bool isRelease;
 
     Result mcuInfoRes = menuUpdateMcuInfo();
@@ -442,8 +442,8 @@ static void menuDraw(Menu *menu, u32 selected)
     svcGetSystemInfo(&out, 0x10000, 0);
     version = (u32)out;
 
-    svcGetSystemInfo(&out, 0x10000, 1);
-    commitHash = (u32)out;
+    //svcGetSystemInfo(&out, 0x10000, 1);
+    //commitHash = (u32)out;
 
     svcGetSystemInfo(&out, 0x10000, 0x200);
     isRelease = (bool)out;
@@ -497,10 +497,11 @@ static void menuDraw(Menu *menu, u32 selected)
     else
         Draw_DrawFormattedString(SCREEN_BOT_WIDTH - 10 - SPACING_X * 19, SCREEN_BOT_HEIGHT - 20, COLOR_WHITE, "%19s", "");
 
+    Draw_DrawString(10, SCREEN_BOT_HEIGHT - 30, COLOR_TITLE, "RadiantLuma v1.0");
     if(isRelease)
-        Draw_DrawFormattedString(10, SCREEN_BOT_HEIGHT - 20, COLOR_TITLE, "Luma3DS %s", versionString);
+        Draw_DrawFormattedString(10, SCREEN_BOT_HEIGHT - 20, COLOR_TITLE, "(based on Luma %s)", versionString);
     else
-        Draw_DrawFormattedString(10, SCREEN_BOT_HEIGHT - 20, COLOR_TITLE, "Luma3DS %s-%08lx", versionString, commitHash);
+        Draw_DrawFormattedString(10, SCREEN_BOT_HEIGHT - 20, COLOR_TITLE, "(based on Luma %s)", versionString);
 
     Draw_FlushFramebuffer();
 }

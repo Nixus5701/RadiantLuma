@@ -100,11 +100,12 @@ static size_t LumaConfig_SaveLumaIniConfigToStr(char *out, const CfgData *cfg)
     svcGetSystemInfo(&outInfo, 0x10000, 0);
     u32 version = (u32)outInfo;
 
-    svcGetSystemInfo(&outInfo, 0x10000, 1);
-    u32 commitHash = (u32)outInfo;
+// Commit hash and release flag not needed for custom version string
+// svcGetSystemInfo(&outInfo, 0x10000, 1);
+// u32 commitHash = (u32)outInfo;
 
-    svcGetSystemInfo(&outInfo, 0x10000, 0x200);
-    bool isRelease = (bool)outInfo;
+// svcGetSystemInfo(&outInfo, 0x10000, 0x200);
+// bool isRelease = (bool)outInfo;
 
     switch (MULTICONFIG(SPLASH)) {
         default: case 0: splashPosStr = "off"; break;
@@ -132,16 +133,12 @@ static size_t LumaConfig_SaveLumaIniConfigToStr(char *out, const CfgData *cfg)
     }
 
     if (GET_VERSION_REVISION(version) != 0) {
-        sprintf(lumaVerStr, "Luma3DS v%d.%d.%d", (int)GET_VERSION_MAJOR(version), (int)GET_VERSION_MINOR(version), (int)GET_VERSION_REVISION(version));
+        sprintf(lumaVerStr, "RadiantLuma v1.0 (Luma v%d.%d.%d)", (int)GET_VERSION_MAJOR(version), (int)GET_VERSION_MINOR(version), (int)GET_VERSION_REVISION(version));
     } else {
-        sprintf(lumaVerStr, "Luma3DS v%d.%d",  (int)GET_VERSION_MAJOR(version), (int)GET_VERSION_MINOR(version));
+        sprintf(lumaVerStr, "RadiantLuma v1.0 (Luma v%d.%d)",  (int)GET_VERSION_MAJOR(version), (int)GET_VERSION_MINOR(version));
     }
 
-    if (isRelease) {
-        strcpy(lumaRevSuffixStr, "");
-    } else {
-        sprintf(lumaRevSuffixStr, "-%08lx", (u32)commitHash);
-    }
+    strcpy(lumaRevSuffixStr, "");
 
     LumaConfig_ConvertComboToString(rosalinaMenuComboStr, cfg->rosalinaMenuCombo);
 

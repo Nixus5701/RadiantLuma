@@ -35,12 +35,20 @@
 #include "menus/miscellaneous.h"
 #include "menus/sysconfig.h"
 #include "menus/screen_filters.h"
+#include "luminance.h"
 #include "plugin.h"
 #include "ifile.h"
 #include "memory.h"
 #include "fmt.h"
 #include "process_patches.h"
 #include "luma_config.h"
+
+// Brightness overclock globals
+static Handle g_brightnessThread = 0;
+static bool g_brightnessThreadRunning = false;
+static bool g_brightnessOverclockEnabled = false;
+static u8 g_brightnessThreadStack[0x1000] __attribute__((aligned(8)));
+static char brightnessOverclockTitle[64] = "Temporarily boost brightness: [Disabled]";
 
 Menu rosalinaMenu = {
     "Rosalina menu",
@@ -49,6 +57,7 @@ Menu rosalinaMenu = {
         { "Screen filters...", MENU, .menu = &screenFiltersMenu },
         { "Cheats...", METHOD, .method = &RosalinaMenu_Cheats },
         { "", METHOD, .method = PluginLoader__MenuCallback},
+        { brightnessOverclockTitle, METHOD, .method = &RosalinaMenu_OverclockBrightness },
         { "New 3DS menu...", MENU, .menu = &N3DSMenu, .visibility = &menuCheckN3ds },
         { "Process list", METHOD, .method = &RosalinaMenu_ProcessList },
         { "Debugger options...", MENU, .menu = &debuggerMenu },
@@ -59,7 +68,6 @@ Menu rosalinaMenu = {
         { "Power off / reboot", METHOD, .method = &RosalinaMenu_PowerOffOrReboot },
         { "System info", METHOD, .method = &RosalinaMenu_ShowSystemInfo },
         { "Credits", METHOD, .method = &RosalinaMenu_ShowCredits },
-        { "Debug info", METHOD, .method = &RosalinaMenu_ShowDebugInfo, .visibility = &rosalinaMenuShouldShowDebugInfo },
         {},
     }
 };
@@ -226,10 +234,13 @@ void RosalinaMenu_ShowCredits(void)
     do
     {
         Draw_Lock();
-        Draw_DrawString(10, 10, COLOR_TITLE, "Rosalina -- Luma3DS credits");
+        Draw_DrawString(10, 10, COLOR_TITLE, "Rosalina -- RadiantLuma credits");
 
-        u32 posY = Draw_DrawString(10, 30, COLOR_WHITE, "Luma3DS (c) 2016-2025 AuroraWright, TuxSH") + SPACING_Y;
+        u32 posY = Draw_DrawString(10, 30, COLOR_WHITE, "RadiantLuma modifications by Nixus5701") + SPACING_Y;
+        posY = Draw_DrawString(10, posY, COLOR_WHITE, "Based on Luma3DS (c) 2016-2025 AuroraWright, TuxSH") + SPACING_Y;
 
+        posY = Draw_DrawString(10, posY + SPACING_Y, COLOR_WHITE, "Temporary brightness boost by Nixus5701");
+        posY = Draw_DrawString(10, posY + SPACING_Y, COLOR_WHITE, "Permanent brightness recalibration by Nutez");
         posY = Draw_DrawString(10, posY + SPACING_Y, COLOR_WHITE, "3DSX loading code by fincs");
         posY = Draw_DrawString(10, posY + SPACING_Y, COLOR_WHITE, "Networking code & basic GDB functionality by Stary");
         posY = Draw_DrawString(10, posY + SPACING_Y, COLOR_WHITE, "InputRedirection by Stary (PoC by ShinyQuagsire)");
@@ -514,6 +525,50 @@ end:
 
     if (archive != 0)
         FSUSER_CloseArchive(archive);
+}
+
+static void brightnessThreadMain(void)
+{
+    g_brightnessThreadRunning = true;
+    
+    while (true) {
+        // Only apply brightness when enabled
+        if (g_brightnessOverclockEnabled) {
+            setLuminance(400, true);
+            setLuminance(400, false);
+            svcSleepThread(5000000LL); // 5ms when active
+        } else {
+            // Sleep longer when disabled to save CPU
+            svcSleepThread(50000000LL); // 50ms when inactive
+        }
+    }
+}
+
+void RosalinaMenu_OverclockBrightness(void)
+{
+    // Start thread on first use if not already running
+    if (!g_brightnessThreadRunning) {
+        s32 priority = 0x3C;
+        u32 *stack = (u32 *)(g_brightnessThreadStack + sizeof(g_brightnessThreadStack));
+        svcCreateThread(&g_brightnessThread, (ThreadFunc)brightnessThreadMain, 0, stack, priority, 1);
+        
+        // Wait a moment for thread to start
+        svcSleepThread(10000000LL); // 10ms
+    }
+    
+    // Toggle the enabled state
+    g_brightnessOverclockEnabled = !g_brightnessOverclockEnabled;
+    
+    // Update menu text and apply brightness
+    if (g_brightnessOverclockEnabled) {
+        strcpy(brightnessOverclockTitle, "Temporarily boost brightness: [Enabled]");
+        // Brightness 400 will be applied by the thread
+    } else {
+        strcpy(brightnessOverclockTitle, "Temporarily boost brightness: [Disabled]");
+        // Reset to default max brightness (172) immediately
+        setLuminance(172, true);   // top screen
+        setLuminance(172, false);  // bottom screen
+    }
 }
 
 #undef TRY
