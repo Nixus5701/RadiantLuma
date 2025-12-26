@@ -25,6 +25,10 @@ Implementation of [Nutez's Permanent Brightness Recalibration](https://github.co
 
 Follow the standard [Luma3DS installation process](https://github.com/LumaTeam/Luma3DS/wiki). RadiantLuma is a drop-in replacement.
 
+## License
+
+This project is licensed under the GPLv3. See the [LICENSE](LICENSE) file for details.
+
 ## Credits
 
 - [LumaTeam](https://github.com/LumaTeam) for Luma3DS
