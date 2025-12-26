@@ -8,7 +8,7 @@ A fork of [Luma3DS](https://github.com/LumaTeam/Luma3DS) (based on v13.3.3) that
 Boosts screen brightness beyond the standard 3DS limits. Includes a simple toggle to enable or disable, and the setting persists even when entering sleep mode.
 
 This feature has been tested for safety; I ran it for a week straight with a white background while the 3DS was plugged in with no issues.
-Useful for those that have 3DS's with yellowed screens, I myself tried it with my japanese New 3DS and it reduced the yellow tint substantially.
+Useful for those that have 3DS's with yellowed screens. I myself tried it with my japanese New 3DS and it reduced the yellow tint substantially.
 
 Can also be used outdoors for a better viewing experience since it considerably increases both screen's brightnesses, but with the tradeoff of higher battery usage.
 
