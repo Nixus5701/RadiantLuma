@@ -10,7 +10,7 @@ Boosts screen brightness beyond the standard 3DS limits. Includes a simple toggl
 This feature has been tested for safety; I ran it for a week straight with a white background while the 3DS was plugged in with no issues.
 Useful for those that have 3DS's with yellowed screens. I myself tried it with my japanese New 3DS and it reduced the yellow tint substantially.
 
-Can also be used outdoors for a better viewing experience since it considerably increases both screen's brightnesses, but with the tradeoff of higher battery usage.
+Can also be used outdoors for a better viewing experience since it considerably increases both screens' brightnesses, but with the tradeoff of higher battery usage.
 
 ### Permanent Brightness Recalibration
 Implementation of [Nutez's Permanent Brightness Recalibration](https://github.com/DullPointer/Luma3DS/commit/0e67a667077f601680f74ddc10ef88a799a5a7ad#diff-33c1f680c1c6c4ed3d06898a6535d80f17bc93753dfbb3ab4d61e9d7f940ecaeR139-R142), allowing you to modify the vanilla brightness values for levels 1–5.
