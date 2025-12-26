@@ -7,12 +7,15 @@ A fork of [Luma3DS](https://github.com/LumaTeam/Luma3DS) (based on v13.3.3) that
 ### Temporary Brightness Boost
 Boosts screen brightness beyond the standard 3DS limits. Includes a simple toggle to enable or disable, and the setting persists even when entering sleep mode.
 
-This feature has been tested for safety; I ran it for a week straight with a white background while the 3DS was plugged in with no issues. (Still, use at your own risk.)
+This feature has been tested for safety; I ran it for a week straight with a white background while the 3DS was plugged in with no issues.
+Useful for those that have 3DS's with yellowed screens, I myself tried it with my japanese New 3DS and it reduced the yellow tint substantially.
+
+Can also be used outdoors for a better viewing experience since it considerably increases both screen's brightnesses, but with the tradeoff of higher battery usage.
 
 ### Permanent Brightness Recalibration
 Implementation of Nutez's Permanent Brightness Recalibration, allowing you to modify the vanilla brightness values for levels 1–5.
 
-**Note:** The brightness boost value cannot be applied to these levels, as the 3DS OS refuses to accept values beyond 172, even if they get saved.
+**Note:** The brightness boost value cannot be applied to these levels, as the 3DS OS refuses to accept values beyond 172.
 
 ## Limitations
 
