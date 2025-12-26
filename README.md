@@ -21,7 +21,7 @@ The 400 value is arbitrary, any value above 172 will have the same effect with t
 ### Permanent Brightness Recalibration
 Implementation of [Nutez's Permanent Brightness Recalibration](https://github.com/DullPointer/Luma3DS/commit/0e67a667077f601680f74ddc10ef88a799a5a7ad#diff-33c1f680c1c6c4ed3d06898a6535d80f17bc93753dfbb3ab4d61e9d7f940ecaeR139-R142), allowing you to modify the vanilla brightness values for levels 1–5.
 
-**Note:** The brightness boost value cannot be applied to these levels, as the 3DS OS refuses to accept values beyond 172.
+**Note:** The brightness boost value cannot be applied to these levels as the 3DS OS refuses to accept values beyond 172, hence the feature above.
 
 ## Limitations
 
