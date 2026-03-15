@@ -627,11 +627,7 @@ static size_t saveLumaIniConfigToStr(char *out)
         case 2: forceAudioOutputStr = "speakers"; break;
     }
 
-    if (VERSION_BUILD != 0) {
-        sprintf(lumaVerStr, "Luma3DS v%d.%d.%d", (int)VERSION_MAJOR, (int)VERSION_MINOR, (int)VERSION_BUILD);
-    } else {
-        sprintf(lumaVerStr, "Luma3DS v%d.%d", (int)VERSION_MAJOR, (int)VERSION_MINOR);
-    }
+    sprintf(lumaVerStr, "RadiantLuma");
 
     if (ISRELEASE) {
         strcpy(lumaRevSuffixStr, "");
@@ -1013,7 +1009,7 @@ void configMenu(bool oldPinStatus, u32 oldPinMode)
                                        "FIRM0",
                                        "FIRM1" };
 
-    drawString(true, 10, 10, COLOR_TITLE, CONFIG_TITLE);
+    drawString(true, 10, 10, COLOR_TITLE, "RadiantLuma configuration");
     drawString(true, 10, 10 + SPACING_Y, COLOR_TITLE, "Use the DPAD and A to change settings");
     drawFormattedString(false, 10, SCREEN_HEIGHT - 2 * SPACING_Y, COLOR_YELLOW, "Booted from %s via %s", isSdMode ? "SD" : "CTRNAND", bootTypes[(u32)bootType]);
 

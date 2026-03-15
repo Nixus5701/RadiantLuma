@@ -37,6 +37,7 @@
 #include "menus/screen_filters.h"
 #include "menus/cheats.h"
 #include "menus/sysconfig.h"
+#include "redshift/redshift.h"
 #include "input_redirection.h"
 #include "minisoc.h"
 #include "draw.h"
@@ -172,10 +173,18 @@ static void handleShellNotification(u32 notificationId)
         // Note that this notification is also fired on system init.
         // Sequence goes like this: MCU fires notif. 0x200 on shell open
         // and shell close, then NS demuxes it and fires 0x213 and 0x214.
+        Redshift_NotifyWake();
         handleShellOpened();
         menuShouldExit = false;
+        
+        // Apply Night/Light brightness settings (NOT color temp - that's handled by thread)
+        if(nightLightSettingsRead)
+        { 
+            Redshift_ApplyNightLightSettings();
+        }
     } else {
         // Shell closed
+        Redshift_NotifySleep();
         menuShouldExit = true;
     }
 
@@ -257,6 +266,13 @@ int main(void)
 {
     Sleep__Init();
     PluginLoader__Init();
+
+    // Read Night/Light settings
+    nightLightSettingsRead = Redshift_ReadNightLightSettings();
+    
+    // Start the background time-check thread
+    // This thread waits 5 seconds then applies color temp, and monitors for time changes
+    Redshift_StartTimeCheckThread();
 
     if(R_FAILED(svcCreateEvent(&preTerminationEvent, RESET_STICKY)))
         svcBreak(USERBREAK_ASSERT);

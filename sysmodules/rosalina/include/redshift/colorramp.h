@@ -22,8 +22,8 @@
 
 #include <stdint.h>
 
-//#include "redshift.h"
-
-void colorramp_get_white_point(float *out_white_point, int temperature); // not in original code
+// Get white point RGB values for a given color temperature (1000K - 25100K)
+// out_white_point should be a float[3] array for R, G, B values (0.0 - 1.0)
+void colorramp_get_white_point(float *out_white_point, int temperature);
 
 #endif /* ! REDSHIFT_COLORRAMP_H */

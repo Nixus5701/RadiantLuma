@@ -38,6 +38,7 @@ void RosalinaMenu_ProcessList(void);
 void RosalinaMenu_SaveSettings(void);
 void RosalinaMenu_HomeMenu(void);
 void RosalinaMenu_Cheats(void);
+void RosalinaMenu_OverclockBrightness(void);
 
 void RosalinaMenu_PowerOffOrReboot(void);
 

@@ -32,6 +32,7 @@
 #include "menus/screen_filters_srgb_tables.h"
 #include "draw.h"
 #include "redshift/colorramp.h"
+#include "redshift/redshift.h"
 
 typedef union {
     struct {
@@ -195,8 +196,9 @@ Menu screenFiltersMenu = {
         { "[1900K] Candle", METHOD, .method = &ScreenFiltersMenu_SetCandle },
         { "[1200K] Ember", METHOD, .method = &ScreenFiltersMenu_SetEmber },
         { "[IPS recommended] Enhance top screen colors", METHOD, .method = &ScreenFiltersMenu_SetTopScreenSrgbColorCurve },
-        { "[IPS recommended] Enhance bottom screen colors", METHOD, .method = &ScreenFiltersMenu_SetTopScreenSrgbColorCurve },
+        { "[IPS recommended] Enhance bottom screen colors", METHOD, .method = &ScreenFiltersMenu_SetBottomScreenSrgbColorCurve },
         { "Advanced configuration...", METHOD, .method = &ScreenFiltersMenu_AdvancedConfiguration },
+        { "Night/Light Config", METHOD, .method = &Redshift_ConfigureNightLightSettings },
         {},
     }
 };
@@ -221,10 +223,9 @@ void ScreenFiltersMenu_RestoreSettings(void)
     if (ScreenFiltersMenu_IsDefaultSettings())
         return;
 
-    // Wait for GSP to restore the CCT table
+    // Wait for GSP to restore the framebuffers:
     svcSleepThread(20 * 1000 * 1000LL);
 
-    // Pause GSP, then wait a bit to ensure GPU commands complete
     // We need to ensure no GPU stuff is running when changing
     // the gamma table (otherwise colors become and stay glitched).
     svcKernelSetState(0x10000, 2);

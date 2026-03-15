@@ -19,9 +19,7 @@
 */
 
 #include <stdint.h>
-//#include <math.h>
-
-//#include "redshift/redshift.h"
+#include "redshift/colorramp.h"
 
 /* Whitepoint values for temperatures at 100K intervals.
    These will be interpolated for the actual temperature.
@@ -276,18 +274,21 @@ static const float blackbody_color[] = {
 static void
 interpolate_color(float a, const float *c1, const float *c2, float *c)
 {
-	c[0] = (1.0-a)*c1[0] + a*c2[0];
-	c[1] = (1.0-a)*c1[1] + a*c2[1];
-	c[2] = (1.0-a)*c1[2] + a*c2[2];
+	c[0] = (1.0f-a)*c1[0] + a*c2[0];
+	c[1] = (1.0f-a)*c1[1] + a*c2[1];
+	c[2] = (1.0f-a)*c1[2] + a*c2[2];
 }
 
 
-// Not in original code
 void colorramp_get_white_point(float *out_white_point, int temperature)
 {
+	// Clamp temperature to valid range
+	if (temperature < 1000) temperature = 1000;
+	if (temperature > 25100) temperature = 25100;
+
 	/* Approximate white point */
-	float alpha = (temperature % 100) / 100.0;
-	int temp_index = ((temperature - 1000) / 100)*3;
+	float alpha = (temperature % 100) / 100.0f;
+	int temp_index = ((temperature - 1000) / 100) * 3;
 	interpolate_color(alpha, &blackbody_color[temp_index],
 			  &blackbody_color[temp_index+3], out_white_point);
 }
